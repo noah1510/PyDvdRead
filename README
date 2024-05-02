@@ -1,8 +1,8 @@
-PyDvdRead -- A wrapper library around libdvdread4.
+PyDvdRead -- A wrapper library around libdvdread.
 
-This python module wraps libdvdread4 to provide Python access to DVD structural information. This does not fully wrap libdvdread4 as my needs are not that extensive.
+This python module wraps libdvdread to provide Python access to DVD structural information. This does not fully wrap libdvdread as my needs are not that extensive.
 
-Please note that this module uses libdvdread4 to directly access a DVD disc if the device path is provided. This means that execution speed will depend on disc access, which can be slow. Just be aware of this.
+Please note that this module uses libdvdread to directly access a DVD disc if the device path is provided. This means that execution speed will depend on disc access, which can be slow. Just be aware of this.
 
 ---------
 :Install:

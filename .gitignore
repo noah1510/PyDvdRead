@@ -5,3 +5,8 @@
 build/
 dist/
 .AppleDouble/
+
+_dvdread*.so
+_dvdread*.dll
+
+dvdread.egg-info/
