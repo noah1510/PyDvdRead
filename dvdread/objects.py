@@ -299,23 +299,24 @@ class DVD(_dvdread.DVD):
     A title has chapters, audio tracks, and subpictures ("subtitles").
     """
 
-    def __init__(self, Path, TitleClass=None):
+    def __init__(self, path, title_class=None):
         """
         Initializes a DVD object and requires the path to the DVD device to query.
         @Path: device path.
         @TitleClass: python-level class to use when creating title objects.
         """
 
-        if TitleClass is None: TitleClass = Title
+        if title_class is None:
+            title_class = Title
 
-        _dvdread.DVD.__init__(self, Path, TitleClass=TitleClass)
+        _dvdread.DVD.__init__(self, path, TitleClass=title_class)
         self.titles = {}
         self.name = None
 
     def __enter__(self):
         return self
 
-    def __exit__(self, type, value, tb):
+    def __exit__(self, dvd_type, value, tb):
         # Close, always
         try:
             self.Close()
@@ -325,7 +326,7 @@ class DVD(_dvdread.DVD):
         # Don't suppress any exceptions
         return False
 
-    def GetTitle(self, titlenum):
+    def get_title(self, titlenum):
         """
         Get the object for the given title. Title objects are cached.
         @titlenum: the title number to query starting with one.
@@ -339,9 +340,26 @@ class DVD(_dvdread.DVD):
 
         i = _dvdread.DVD.GetTitle(self, titlenum)
         self.titles[titlenum] = i
-        return i;
+        return i
 
-    def GetName(self):
+    def get_all_titles(self):
+        """
+        Get all titles on the disc.
+        """
+
+        if not self.IsOpen:
+            raise AttributeError("GetAllTitles: disc is not open")
+
+        titles = []
+        for i in range(1, self.NumberOfTitles + 1):
+            try:
+                titles.append(self.GetTitle(i))
+            except Exception:
+                pass
+
+        return titles
+
+    def get_name(self):
         """
         Get the name of the DVD disc in UTF-8.
         """
@@ -359,7 +377,7 @@ class DVD(_dvdread.DVD):
 
         return self.name
 
-    def GetNameTitleCase(self):
+    def get_name_title_case(self):
         """
         Takes the DVD name, changes underscores for spaces, and uses title case.
         Returns a slightly more human-friendly name of the disc.
